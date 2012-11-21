@@ -6,7 +6,7 @@ var LevelManager = function(levels, gameManager)
 		this.levels = levels;
 		this.gameManager = gameManager;
         this.gameManager.registerEventListener('levelCompleted', {object: this, method: this.onLevelCompleted});
-        this.levelHtml = '<div class="levelButton"><canvas class="levelNo" width="110" height="46"></canvas><div class="levelGold"></div></div>';
+        this.levelHtml = '<div class="levelButton"><div class="levelNo"></div><div class="levelGold"></div></div>';
 
         this.redrawLevels();
 
@@ -44,22 +44,7 @@ var LevelManager = function(levels, gameManager)
             var levelElem = $(this.levelHtml);
 //            levelElem.find('.levelNo').text(levelNo);
             levelElem.find('.levelGold').text(sm.getLevelState(i).gold + '/' + this.levels[i].availableGold);
-            var canvasJQ = levelElem.find('canvas.levelNo');
-            var canvas = canvasJQ[0];
-            var centerX = Math.round(canvas.width / 2);
-            var centerY = Math.round(canvas.height / 2);
-
-            var cc = canvas.getContext('2d');
-            cc.font = 'normal 48px redCircle';
-            cc.fillStyle = 'rgba(255,255,255,255)';
-            cc.lineWidth = 4;
-            cc.strokeStyle = 'rgba(51,51,51,255)';
-            cc.textAlign = 'center';
-            cc.textBaseline = 'middle';
-
-            cc.fillText(levelNo, centerX, centerY);
-            cc.strokeText(levelNo, centerX, centerY);
-
+            var levelNoElem = levelElem.find('div.levelNo').text(levelNo);
             levelElem.click({self: this, levelNo: levelNo}, this.onLevelClick);
 
             levelSelectElem.append(levelElem);

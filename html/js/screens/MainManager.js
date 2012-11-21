@@ -26,7 +26,7 @@ var MainManager = function(gameManager)
             self.gameManager.screenManager.showScreen('options');
         });
 
-        mainElem.find('.dialogButton:has(.buttonMenu)').click(function(e) {
+        mainElem.find('.dialogButton:has(.buttonEditor)').click(function(e) {
             self.gameManager.screenManager.showScreen('editor');
         });
 

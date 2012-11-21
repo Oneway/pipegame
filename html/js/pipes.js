@@ -18,14 +18,7 @@ var options = {
 			'img/splash/title.png'
 		],
 		other: [
-			'img/exits.png',
-			'img/playfield.png',
-			'img/valve.png',
-            'img/arrows.png',
-            'img/level_button.png',
-			'img/dialogs/dialog_background.png',
-			'img/dialogs/dialog_buttons.png',
-			'img/dialogs/dialog_titles.png',
+			'img/arrows.png',
             'img/pipes/blank.png',
 			'img/pipes/bend.png',
 			'img/pipes/bend_full.png',

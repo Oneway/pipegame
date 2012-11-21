@@ -119,7 +119,8 @@ var TileManager= function(gameManager, options) {
 	{
         this.parent.find('canvas').remove();
         this.parent.find('img').remove();
-        this.parent.find('div[class^=exit]').remove();
+        this.parent.find('div.finish').remove();
+        this.parent.find('div.start').remove();
 
         this.parent.unbind('click');
         this.tile = [];
@@ -134,21 +135,19 @@ var TileManager= function(gameManager, options) {
 		});
 
 		for (var i = 0; i < levelDef.starts.length; i++) {
-			var imgElem = $('<img>');
-			imgElem.attr({
-				src: 'img/valve.png',
-				'class': 'valveImage'
-			});
-			imgElem.css({
-				left: this.options.startOffsetX + this.options.offsetX + levelDef.starts[i][0] * this.options.tileWidth + 'px',
-				top: this.options.startOffsetY + this.options.offsetY + levelDef.starts[i][1] * this.options.tileHeight + 'px'
+			var startElem = $('<div class="start">S</div>');
+
+			startElem.css({
+				left: this.options.offsetX + levelDef.starts[i][0] * this.options.tileWidth + 'px',
+				top: this.options.offsetY + levelDef.starts[i][1] * this.options.tileHeight + 'px'
 			});
 
-			this.parent.append(imgElem);
+			this.parent.append(startElem);
 		}
 
 		for (var i = 0; i < levelDef.finishes.length; i++) {
 
+            /*
 			var exitPos = '';
 			if (levelDef.finishes[i][0] < 0) {
 				exitPos = 'exitLeft';
@@ -159,9 +158,8 @@ var TileManager= function(gameManager, options) {
 			} else {
 				exitPos = 'exitBottom'
 			}
-
-			var finishElem = $('<div>');
-			finishElem.attr('class', 'exit ' + exitPos);
+            */
+			var finishElem = $('<div class="finish">F</div>');
 			finishElem.css({
 				left: this.options.offsetX + levelDef.finishes[i][0] * this.options.tileWidth + 'px',
 				top: this.options.offsetY + levelDef.finishes[i][1] * this.options.tileHeight + 'px'
@@ -227,7 +225,7 @@ var TileManager= function(gameManager, options) {
 
 		// reset all tile images to default
 		for (var i = 0; i < this.tiles.length; i++) {
-			this.tiles[i].tile.setActiveImg(null);
+			this.tiles[i].tile.setActiveImgCoords(null);
 		}
 
 		while (starts.length > 0) {

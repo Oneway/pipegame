@@ -42,5 +42,3 @@ function findFilesByExtension($dir, $extension, $exceptions)
     );
 }
 
-
-?>

@@ -1,7 +1,10 @@
 body {
-    background-color: #333;
+    background-color: #666;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    color: #000;
 }
-
+/*
 @font-face {
     font-family: 'redCircle';
     src: url('../font/redcircl-webfont.eot');
@@ -10,14 +13,15 @@ body {
     font-weight: normal;
     font-style: normal;
 }
+*/
 
 #game, #offScreenHolder {
     position: relative;
     margin: 50px auto;
     width: 800px;
     height: 700px;
-    background-color: #000;
-    border: 1px solid #fff;
+    background-color: #fff;
+    border: 2px solid #000;
     overflow: hidden;
 }
 
@@ -32,7 +36,11 @@ body {
     left: 0;
     height: 100%;
     width: 100%;
-    background-color: #B29BAC;
+    background-color: #fff;
+}
+
+#main div.dialogButton{
+    margin: 10px;
 }
 
 #playfield, #editorPlayField {
@@ -41,53 +49,40 @@ body {
     left: 50px;
     width: 400px;
     height: 400px;
-    background-color: #B29BAC;
+    border: 2px solid #000;
+    background-color: #fff;
 }
 
 .fieldTopLeft {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: url('../img/playfield.png') no-repeat top left;
+    background-color: #666;
 }
 
 .fieldBottomRight {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    background: url('../img/playfield.png') no-repeat bottom right;
+    top: 38px;
+    bottom: 38px;
+    left: 38px;
+    right: 38px;
+    border: 2px solid #000;
+    background-color: #fff;
 }
 
 #playfield canvas {
     z-index: 1;
 }
 
-.exit {
+.finish, .start {
     position: absolute;
     width: 40px;
     height: 40px;
-    background-image: url('../img/exits.png');
-    background-repeat: none;
-}
-
-.exitLeft {
-    background-position: 0px 0px;
-}
-.exitRight {
-    background-position: -40px 0px;
-}
-.exitBottom {
-    background-position: -80px 0px;
-}
-.exitTop {
-    background-position: -120px 0px;
-}
-
-.valveImage {
-    position: absolute;
-    width: 55px;
-    height: 57px;
     z-index: 3;
+    text-align: center;
+    color: #fff;
+    font-size: 30px;
+    font-weight: bold;
 }
 
 #editor {
@@ -162,7 +157,7 @@ body {
     bottom: 0;
     top: 0;
     padding-top: 71px;
-    background-color: #000;
+    background-color: #fff;
 }
 
 #splash div.splashTitle {
@@ -170,26 +165,19 @@ body {
     margin: 0 auto 0 auto;
     width: 666px;
     height: 80px;
-    background-image: url('../img/splash/title.png');
-}
-
-#splash div.splashLogo {
-    position: relative;
-    display: block;
-    margin: 43px auto 0 auto;
-    width: 500px;
-    height: 370px;
-    background-image: url('../img/splash/oneway_games.png');
+    font-size: 100px;
+    font-weight: bold;
+    text-align: center;
 }
 
 #splash div.loadProgress {
     position: relative;
-    margin: 71px auto 0 auto;
+    margin: 371px auto 0 auto;
     width: 273px;
     height: 17px;
     padding-top: 2px;
-    border: 1px solid #fff;
-    background-color: #1C1623;
+    border: 2px solid #000;
+    background-color: #555;
     color: #fff;
     text-align: center;
     font-size: 12px;
@@ -207,13 +195,14 @@ body {
     left: 0;
     height: 100%;
     width: 65%;
-    background-color: #3F314E;
+    background-color: #999;
     z-index: 1;
 }
 
 #splash div.dialogButton {
     position: relative;
-    margin: 40px auto 0 auto;
+    margin: 340px auto 0 auto;
+    display: none;
 }
 
 
@@ -239,8 +228,9 @@ body {
     width: 506px;
     height: 328px;
     top: 50%;
+    border: 2px solid #000;
     margin: -164px auto 0 auto;
-    background: transparent url('../img/dialogs/dialog_background.png') no-repeat;
+    background-color: #fff;
 }
 #dialog #dialogTitle {
     position: relative;
@@ -248,14 +238,15 @@ body {
     height: 33px;
     top: 38px;
     margin: 0 auto 0 auto;
-    background-image: url('../img/dialogs/dialog_titles.png');
-    background-repeat: no-repeat;
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
 }
-#dialog .dialogTitleWin1 {background-position-y: -0px;}
-#dialog .dialogTitleWin2 {background-position-y: -48px;}
-#dialog .dialogTitleWin3 {background-position-y: -96px;}
-#dialog .dialogTitleWin4 {background-position-y: -144px;}
-#dialog .dialogTitleWin5 {background-position-y: -192px;}
+#dialog .dialogTitleWin1:before {content: 'Awesome!';}
+#dialog .dialogTitleWin2:before {content: 'You rock!';}
+#dialog .dialogTitleWin3:before {content: 'Congratulations!';}
+#dialog .dialogTitleWin4:before {content: 'You are the best';}
+#dialog .dialogTitleWin5:before {content: 'A winner is you!';}
 
 #dialog #dialogText {
     position: relative;
@@ -267,14 +258,13 @@ body {
     font-family: Arial;
     font-size: 16px;
     font-weight: bold;
-    color: #fff;
 }
 
 #dialog #dialogButtons {
     position: relative;
     width: 428px;
     height: 36px;
-    margin: 6px auto 0 auto;
+    margin: 23px auto 0 auto;
 }
 #dialog #dialogButtons .dialogButton {
     display: inline;
@@ -286,10 +276,10 @@ body {
 }
 
 div.dialogButton {
+    border: 2px solid #000;
     width: 164px;
     height: 36px;
-    padding-top: 18px;
-    background: url('../img/dialogs/dialog_buttons.png') no-repeat 0 0;
+    padding-top: 10px;
     overflow: hidden;
     cursor: default;
 }
@@ -299,31 +289,34 @@ div.dialogButton:hover
 }
 div.dialogButton div.dialogButtonText {
     width: 164px;
-    height: 23px;
+    height: 30px;
     overflow: hidden;
-    background-image: url('../img/dialogs/dialog_buttons.png');
-    background-repeat: no-repeat;
+    color: #000;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
 }
 
-div.dialogButton div.buttonMenu {background-position: 0 -57px;}
-div.dialogButton div.buttonNext {background-position: 0 -105px;}
-div.dialogButton div.buttonPrev {background-position: 0 -153px;}
-div.dialogButton div.buttonAgain {background-position: 0 -201px;}
-div.dialogButton div.buttonOk {background-position: 0 -249px;}
-div.dialogButton div.buttonYes {background-position: 0 -297px;}
-div.dialogButton div.buttonNo {background-position: 0 -345px;}
-div.dialogButton div.buttonShop {background-position: 0 -393px;}
-div.dialogButton div.buttonLevels {background-position: 0 -441px;}
-div.dialogButton div.buttonMain {background-position: 0 -489px;}
-div.dialogButton div.buttonCancel {background-position: 0 -537px;}
-div.dialogButton div.buttonOptions {background-position: 0 -585px;}
-div.dialogButton div.buttonPlay {background-position: 0 -633px;}
+div.dialogButton div.buttonMenu:before {content: 'Menu';}
+div.dialogButton div.buttonNext:before {content: 'Next';}
+div.dialogButton div.buttonPrev:before {content: 'Previous';}
+div.dialogButton div.buttonAgain:before {content: 'Again';}
+div.dialogButton div.buttonOk:before {content: 'Ok';}
+div.dialogButton div.buttonYes:before {content: 'Yes';}
+div.dialogButton div.buttonNo:before {content: 'No';}
+div.dialogButton div.buttonShop:before {content: 'Shop';}
+div.dialogButton div.buttonLevels:before {content: 'Levels';}
+div.dialogButton div.buttonMain:before {content: 'Main';}
+div.dialogButton div.buttonCancel:before {content: 'Cancel'}
+div.dialogButton div.buttonOptions:before {content: 'Options';}
+div.dialogButton div.buttonPlay:before {content: 'Play';}
+div.dialogButton div.buttonEditor:before {content: 'Editor';}
 
 #level {
     position: relative;
     height: 100%;
     width: 100%;
-    background-color: #000;
+    background-color: #fff;
     overflow: hidden;
 }
 
@@ -337,7 +330,7 @@ div.dialogButton div.buttonPlay {background-position: 0 -633px;}
 #level .levelSelect {
     position: relative;
     float: left;
-    background-color: #000;
+    background-color: #fff;
     top: 0px;
     left: 0px;
     z-index: 1;
@@ -416,16 +409,21 @@ div.dialogButton div.buttonPlay {background-position: 0 -633px;}
     width: 110px;
     height: 123px;
     margin: 25px 0 25px 50px;
-    background: url('../img/level_button.png') no-repeat;
+    border: 2px solid #000;
     cursor: default;
 }
 #level .levelButton:hover {
     cursor: pointer;
 }
 #level .levelButton .levelNo {
-    position: absolute;
-    top: 30px;
+    position: relative;
+    top: 20px;
     left: 0;
+    width: 110;
+    height: 46;
+    font-size: 60px;
+    font-weight: bold;
+    text-align: center;
 }
 
 #level .levelButton .levelGold {
@@ -433,12 +431,11 @@ div.dialogButton div.buttonPlay {background-position: 0 -633px;}
     left: 0;
     right: 0;
     bottom: 0;
-
-    padding-left: 42px;
-    padding-right: 17px;
     padding-bottom: 7px;
-    color: #fff;
     text-align: center;
-    font-family: redCircle;
     font-size: 14px;
+    font-weight: bold;
+}
+#level .levelButton .levelGold:before {
+    content: 'gold: ';
 }

@@ -15,7 +15,8 @@ function BaseTile() {
 	this.imgPath = '';
 	this.imgNames = [];
 	this.images = [];
-	this.activeImgIndex = null;
+	this.activeImgCoords = [0,0];
+    this.imageSpriteObj = null;
 
 	this.exits = [];
 	this.gold = 0;
@@ -37,8 +38,6 @@ function BaseTile() {
 		this.parent = options.parent;
 		this.imgPath = options.imgPath;
 
-		this.preLoadImages();
-
 		var canvasElem = $('<canvas>');
 		this.offsetX = Math.ceil((Math.sqrt(this.w * this.w * 2) - this.w) / 2);
 		this.offsetY = Math.ceil((Math.sqrt(this.h * this.h * 2) - this.h) / 2);
@@ -53,21 +52,12 @@ function BaseTile() {
 			top: (this.y - this.offsetY) + 'px'
 		});
 
+        this.imageSpriteObj = new Image();
+        this.imageSpriteObj.src = '/img/pipes/pipes_sprite.png';
+
 		this.elem = canvasElem;
 		this.parent.append(canvasElem);
 	};
-
-	this.preLoadImages = function()
-	{
-		for(var i = 0; i < this.imgNames.length; i++) {
-			var imgObj = new Image();
-			imgObj.width = this.w;
-			imgObj.height = this.h;
-			imgObj.src = this.imgPath + this.imgNames[i];
-			this.images.push(imgObj);
-		}
-		this.activeImgIndex = 0;
-	}
 
 	this.rotate = function(steps)
 	{
@@ -85,14 +75,24 @@ function BaseTile() {
 
         cc.rotate(this.degree * this.r * this.rotStep);
 		cc.translate(-this.elem[0].width / 2, -this.elem[0].height / 2);
-        cc.drawImage(this.images[this.activeImgIndex], this.offsetX, this.offsetY);
+        cc.drawImage(
+            this.imageSpriteObj,
+            this.activeImgCoords[0] * this.w,
+            this.activeImgCoords[1] * this.h,
+            this.w,
+            this.h,
+            this.offsetX,
+            this.offsetY,
+            this.w,
+            this.h
+        );
 		cc.restore();
 	}
 
 	this.hitTile = function(rotatedSide)
 	{
 		var side = this.translateRotatedSideToSide(rotatedSide);
-		this.setActiveImg(side);
+		this.setActiveImgCoords(side);
 
 		var exits = this.exits[side];
 		var rotatedExits = [];
@@ -101,7 +101,6 @@ function BaseTile() {
 		if (exits != undefined) {
 			for (var i = 0; i < exits.length; i++) {
 				rotatedExit = this.translateSideToRotatedSide(exits[i]);
-
 				rotatedExits[i] = rotatedExit;
 			}
 		}
@@ -133,20 +132,17 @@ function CrossTile(options) {
 		this.exits[1] = [3];
 		this.exits[2] = [0];
 		this.exits[3] = [1];
-		this.imgNames = ['cross.png', 'cross_lr.png', 'cross_tb.png', 'cross_full.png'];
 		this.init(options);
 	}
 
-	this.setActiveImg = function(entrySide)
+	this.setActiveImgCoords = function(entrySide)
 	{
 		if (entrySide == null) {
-			this.activeImgIndex = 0;
-		}
-
-		if (entrySide == 0 || entrySide == 2) {
-			this.activeImgIndex = (this.activeImgIndex == 2) ? 3 : 1;
+			this.activeImgCoords = [0,1];
+		} else if (entrySide == 0 || entrySide == 2) {
+			this.activeImgCoords = (this.activeImgCoords[0] == 2) ? [3,1] : [1,1];
 		} else if (entrySide == 1 || entrySide == 3) {
-			this.activeImgIndex = (this.activeImgIndex == 1) ? 3 : 2;
+			this.activeImgCoords = (this.activeImgCoords[0] == 1) ? [3,1] : [2,1];
 		}
 	}
 
@@ -161,18 +157,15 @@ function BendTile(options) {
 	{
 		this.exits[0] = [3];
 		this.exits[3] = [0];
-		this.imgNames = ['bend.png', 'bend_full.png'];
 		this.init(options);
 	}
 
-	this.setActiveImg = function(entrySide)
+	this.setActiveImgCoords = function(entrySide)
 	{
 		if (entrySide == null) {
-			this.activeImgIndex = 0;
-		}
-
-		if (entrySide == 0 || entrySide == 3) {
-			this.activeImgIndex = 1;
+			this.activeImgCoords = [0,2];
+		} else if (entrySide == 0 || entrySide == 3) {
+			this.activeImgCoords = [1,2];
 		}
 	}
 
@@ -186,18 +179,15 @@ function StraightTile(options) {
 	{
 		this.exits[1] = [3];
 		this.exits[3] = [1];
-		this.imgNames = ['straight.png', 'straight_full.png'];
 		this.init(options);
 	}
 
-	this.setActiveImg = function(entrySide)
+	this.setActiveImgCoords = function(entrySide)
 	{
 		if (entrySide == null) {
-			this.activeImgIndex = 0;
-		}
-
-		if (entrySide == 1 || entrySide == 3) {
-			this.activeImgIndex = 1;
+			this.activeImgCoords = [0,0];
+		} else if (entrySide == 1 || entrySide == 3) {
+			this.activeImgCoords = [1,0];
 		}
 	}
 
@@ -210,18 +200,15 @@ function TShapeTile(options) {
 	this.construct = function(options)
 	{
 		this.exits[3] = [0, 2];
-		this.imgNames = ['tshape.png', 'tshape_full.png'];
 		this.init(options);
 	}
 
-	this.setActiveImg = function(entrySide)
+	this.setActiveImgCoords = function(entrySide)
 	{
 		if (entrySide == null) {
-			this.activeImgIndex = 0;
-		}
-
-		if (entrySide == 3) {
-			this.activeImgIndex = 1;
+			this.activeImgCoords = [0,3];
+		} else if (entrySide == 3) {
+			this.activeImgCoords = [1,3];
 		}
 	}
 
@@ -234,13 +221,12 @@ function BlankTile(options) {
 	this.construct = function(options)
 	{
 		this.exits = [];
-		this.imgNames = ['blank.png'];
 		this.init(options);
 	}
 
-	this.setActiveImg = function(entrySide)
+	this.setActiveImgCoords = function(entrySide)
 	{
-        this.activeImgIndex = 0;
+        this.activeImgIndex = [3,0];
 	}
 
 	this.construct(options);
@@ -253,13 +239,12 @@ function BombTile(options) {
 	this.construct = function(options)
 	{
 		this.exits = [];
-		this.imgNames = ['bomb.png'];
 		this.init(options);
 	}
 
-	this.setActiveImg = function(entrySide)
+	this.setActiveImgCoords = function(entrySide)
 	{
-        this.activeImgIndex = 0;
+        this.activeImgIndex = [2,0];
 	}
 
 	this.construct(options);
