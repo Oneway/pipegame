@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pipegame</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
+    <!--
+    <script src="js/alljs.js" type="text/javascript"></script>
+    -->
+	<script src="js/pipes.js" type="text/javascript"></script>
+	<script src="js/util.js" type="text/javascript"></script>
+
+    <script src="js/objects/jquery.mousewheel.js" type="text/javascript"></script>
+	<script src="js/objects/Tile.js" type="text/javascript"></script>
+    <script src="js/objects/AchievementManager.js" type="text/javascript"></script>
+    <script src="js/objects/GameManager.js" type="text/javascript"></script>
+	<script src="js/objects/ScreenManager.js" type="text/javascript"></script>
+	<script src="js/objects/StateManager.js" type="text/javascript"></script>
+	<script src="js/objects/PxLoader.js" type="text/javascript"></script>
+	<script src="js/objects/PxLoaderImage.js" type="text/javascript"></script>
+	<script src="js/objects/Scrollbars.js" type="text/javascript"></script>
+
+	<script src="js/screens/TileManager.js" type="text/javascript"></script>
+	<script src="js/screens/LevelManager.js" type="text/javascript"></script>
+    <script src="js/screens/MainManager.js" type="text/javascript"></script>
+	<script src="js/screens/SplashManager.js" type="text/javascript"></script>
+    <script src="js/screens/ShopManager.js" type="text/javascript"></script>
+    <script src="js/screens/LevelEditorManager.js" type="text/javascript"></script>
+	<!--
+
+	<script src="js/" type="text/javascript"></script>
+	<script src="js/" type="text/javascript"></script>
+	-->
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+
+<div id="game"></div>
+
+<div id="offScreenHolder">
+
+	<!-- template for splash/loading page -->
+	<div id="splash">
+		<div class="splashTitle"></div>
+		<div class="splashLogo"></div>
+		<div class="loadProgress">
+			<div class="loadProgressBar"></div>
+			<span class="progressPercentage">65%</span>
+		</div>
+		<div class="dialogButton"><div class="dialogButtonText buttonPlay"></div></div>
+	</div>
+
+	<!-- template for the the playing field -->
+    <div id="pipeGame">
+        <div id="playfield">
+            <div class="fieldTopLeft"></div>
+            <div class="fieldBottomRight"></div>
+        </div>
+    </div>
+
+    <div id="editor">
+        <div id="editorPlayField">
+            <div class="fieldTopLeft"></div>
+            <div class="fieldBottomRight"></div>
+            <div id="lessRows" title="Remove a row"></div>
+            <div id="moreRows" title="Add a row"></div>
+            <div id="lessCols" title="Remove a column"></div>
+            <div id="moreCols" title="Add a column"></div>
+            <div id="tileInfo">
+                x: <span id="tileX"></span> y: <span id="tileY"></span> r: <span id="tileR"></span><br>
+                gold: <input type="number" min="0" max="2" id="tileGold" value="0"><br>
+                type: <select id="tileType">
+                    <option value="bl">Blank</option>
+                    <option value="s">Straight</option>
+                    <option value="b">Bend</option>
+                    <option value="c">Cross</option>
+                    <option value="t">T Split</option>
+                    <option value="bo">Bomb</option>
+                </select>
+            </div>
+            <div id="selectedTile"></div>
+        </div>
+        <div id="editorInstructions">
+            <h3>Editor instructions</h3>
+            <p><strong>Playfield size:</strong><br>
+            Click the arrows in the top left corner of the playfield.
+            </p>
+            <p><strong>Tile rotation:</strong><br>
+            Click a tile to rotate it. If there are any starts, the active path will be redrawn
+            </p>
+            <p><strong>Tile properties:</strong><br>
+            Ctrl-click the tile to bring up it's properties. Change the amount of gold in the tile or the tile type.<br>
+            To deselect click or ctrl-click another tile.
+            </p>
+            <p><strong>Adding starts and finishes:</strong><br>
+            Ctrl-click the playfield border and click either the start or the finish button.
+            To remove a start or finish, click the empty option.
+            </p>
+            <p><strong>Saving the level:</strong><br>
+            Click the button in the bottom right corner.
+            </p>
+
+
+        </div>
+    </div>
+
+	<!-- template for level selection screen -->
+	<div id="level">
+        <div class="dialogButton"><div class="dialogButtonText buttonMain"></div></div>
+        <div class="levelHolder">
+            <div class="levelSelect"></div>
+        </div>
+	</div>
+
+    <div id="achievementNotification">
+        <div class="achievementNotificationHeader">Achievement Get!</div>
+        <div class="achievementNotificationTitle"></div>
+    </div>
+
+    <div id="main">
+        <div class="dialogButton"><div class="dialogButtonText buttonPlay"></div></div>
+        <div class="dialogButton"><div class="dialogButtonText buttonLevels"></div></div>
+        <div class="dialogButton"><div class="dialogButtonText buttonShop"></div></div>
+        <div class="dialogButton"><div class="dialogButtonText buttonOptions"></div></div>
+        <p>
+            <div class="dialogButton"><div class="dialogButtonText buttonMenu"></div></div>
+        </p>
+    </div>
+
+    <div id="shop">
+        <div class="dialogButton"><div class="dialogButtonText buttonPrev"></div></div>
+    </div>
+
+    <div id="dialog">
+        <div id="dialogBackground"></div>
+        <div id="dialogHolder">
+            <div id="dialogTitle"></div>
+            <div id="dialogText"></div>
+            <div id="dialogButtons"></div>
+        </div>
+    </div>
+
+
+
+
+</div>
+
+
+
+</body>
+</html>

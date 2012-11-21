@@ -1,0 +1,444 @@
+body {
+    background-color: #333;
+}
+
+@font-face {
+    font-family: 'redCircle';
+    src: url('../font/redcircl-webfont.eot');
+    src: url('../font/redcircl-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../font/redcircl-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+#game, #offScreenHolder {
+    position: relative;
+    margin: 50px auto;
+    width: 800px;
+    height: 700px;
+    background-color: #000;
+    border: 1px solid #fff;
+    overflow: hidden;
+}
+
+#offScreenHolder {
+    position: absolute;
+    top: -2000px;
+}
+
+#splash, #pipeGame, #level, #main, #shop, #editor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #B29BAC;
+}
+
+#playfield, #editorPlayField {
+    position: absolute;
+    top: 100px;
+    left: 50px;
+    width: 400px;
+    height: 400px;
+    background-color: #B29BAC;
+}
+
+.fieldTopLeft {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url('../img/playfield.png') no-repeat top left;
+}
+
+.fieldBottomRight {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url('../img/playfield.png') no-repeat bottom right;
+}
+
+#playfield canvas {
+    z-index: 1;
+}
+
+.exit {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-image: url('../img/exits.png');
+    background-repeat: none;
+}
+
+.exitLeft {
+    background-position: 0px 0px;
+}
+.exitRight {
+    background-position: -40px 0px;
+}
+.exitBottom {
+    background-position: -80px 0px;
+}
+.exitTop {
+    background-position: -120px 0px;
+}
+
+.valveImage {
+    position: absolute;
+    width: 55px;
+    height: 57px;
+    z-index: 3;
+}
+
+#editor {
+    font-family: Arial;
+    color: #000;
+    font-weight: bold;
+    font-size: 12px;
+
+}
+
+#editor #tileInfo {
+    z-index: 999;
+    position: absolute;
+    display: none;
+    width: 150px;
+    background-color: #fff;
+    border: 1px solid #f0f;
+    padding: 10px;
+}
+
+#editor #tileInfo select,
+#editor #tileInfo input {
+    width: 80px;
+}
+
+#editor #editorPlayField #moreRows,
+#editor #editorPlayField #lessRows,
+#editor #editorPlayField #moreCols,
+#editor #editorPlayField #lessCols {
+    position: absolute;
+    cursor: default;
+    background-image: url('../img/arrows.png');
+    background-repeat: no-repeat;
+}
+
+#editor #editorPlayField #moreRows:hover,
+#editor #editorPlayField #lessRows:hover,
+#editor #editorPlayField #moreCols:hover,
+#editor #editorPlayField #lessCols:hover {
+    cursor: pointer;
+}
+
+#editor #editorPlayField #moreCols {
+    left: 30px; top: -30px;height: 24px; width: 29px;background-position: -29px 0;
+}
+#editor #editorPlayField #lessCols {
+    left: 0px; top: -30px;height: 24px; width: 29px;background-position: 0 0;
+}
+#editor #editorPlayField #moreRows {
+    left: -30px; top: 30px;height: 29px; width: 24px;background-position: -26px -25px;
+}
+#editor #editorPlayField #lessRows {
+    left: -30px; top: 0px;height: 29px; width: 24px;background-position: -1px -25px;
+}
+#editor #editorPlayField #selectedTile {
+    position: absolute;
+    display: none;
+    border: 2px solid #f00;
+    z-index: 999;
+}
+#editor #editorInstructions {
+    position: absolute;
+    right: 20px;
+    top: 90px;
+    width: 200px;
+    font-weight: normal;
+}
+
+#splash {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    top: 0;
+    padding-top: 71px;
+    background-color: #000;
+}
+
+#splash div.splashTitle {
+    position:relative;
+    margin: 0 auto 0 auto;
+    width: 666px;
+    height: 80px;
+    background-image: url('../img/splash/title.png');
+}
+
+#splash div.splashLogo {
+    position: relative;
+    display: block;
+    margin: 43px auto 0 auto;
+    width: 500px;
+    height: 370px;
+    background-image: url('../img/splash/oneway_games.png');
+}
+
+#splash div.loadProgress {
+    position: relative;
+    margin: 71px auto 0 auto;
+    width: 273px;
+    height: 17px;
+    padding-top: 2px;
+    border: 1px solid #fff;
+    background-color: #1C1623;
+    color: #fff;
+    text-align: center;
+    font-size: 12px;
+    font-family: arial;
+}
+
+#splash div.loadProgress span.progressPercentage {
+    position: relative;
+    z-index: 2;
+}
+
+#splash div.loadProgressBar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 65%;
+    background-color: #3F314E;
+    z-index: 1;
+}
+
+#splash div.dialogButton {
+    position: relative;
+    margin: 40px auto 0 auto;
+}
+
+
+#dialog {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+}
+#dialog #dialogBackground {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    opacity: 0.84;
+}
+#dialog #dialogHolder {
+    position: relative;
+    width: 506px;
+    height: 328px;
+    top: 50%;
+    margin: -164px auto 0 auto;
+    background: transparent url('../img/dialogs/dialog_background.png') no-repeat;
+}
+#dialog #dialogTitle {
+    position: relative;
+    width: 428px;
+    height: 33px;
+    top: 38px;
+    margin: 0 auto 0 auto;
+    background-image: url('../img/dialogs/dialog_titles.png');
+    background-repeat: no-repeat;
+}
+#dialog .dialogTitleWin1 {background-position-y: -0px;}
+#dialog .dialogTitleWin2 {background-position-y: -48px;}
+#dialog .dialogTitleWin3 {background-position-y: -96px;}
+#dialog .dialogTitleWin4 {background-position-y: -144px;}
+#dialog .dialogTitleWin5 {background-position-y: -192px;}
+
+#dialog #dialogText {
+    position: relative;
+    width: 428px;
+    height: 150px;
+    overflow: hidden;
+    margin: 55px auto 0 auto;
+
+    font-family: Arial;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+}
+
+#dialog #dialogButtons {
+    position: relative;
+    width: 428px;
+    height: 36px;
+    margin: 6px auto 0 auto;
+}
+#dialog #dialogButtons .dialogButton {
+    display: inline;
+    float: left;
+}
+#dialog #dialogButtons .dialogButtonFirst {
+    display: inline;
+    float: left;
+}
+
+div.dialogButton {
+    width: 164px;
+    height: 36px;
+    padding-top: 18px;
+    background: url('../img/dialogs/dialog_buttons.png') no-repeat 0 0;
+    overflow: hidden;
+    cursor: default;
+}
+div.dialogButton:hover
+{
+    cursor: pointer;
+}
+div.dialogButton div.dialogButtonText {
+    width: 164px;
+    height: 23px;
+    overflow: hidden;
+    background-image: url('../img/dialogs/dialog_buttons.png');
+    background-repeat: no-repeat;
+}
+
+div.dialogButton div.buttonMenu {background-position: 0 -57px;}
+div.dialogButton div.buttonNext {background-position: 0 -105px;}
+div.dialogButton div.buttonPrev {background-position: 0 -153px;}
+div.dialogButton div.buttonAgain {background-position: 0 -201px;}
+div.dialogButton div.buttonOk {background-position: 0 -249px;}
+div.dialogButton div.buttonYes {background-position: 0 -297px;}
+div.dialogButton div.buttonNo {background-position: 0 -345px;}
+div.dialogButton div.buttonShop {background-position: 0 -393px;}
+div.dialogButton div.buttonLevels {background-position: 0 -441px;}
+div.dialogButton div.buttonMain {background-position: 0 -489px;}
+div.dialogButton div.buttonCancel {background-position: 0 -537px;}
+div.dialogButton div.buttonOptions {background-position: 0 -585px;}
+div.dialogButton div.buttonPlay {background-position: 0 -633px;}
+
+#level {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    background-color: #000;
+    overflow: hidden;
+}
+
+#level .levelHolder {
+    position: absolute;
+    float: right;
+    height: 600px;
+    top: 100px;
+    overflow: hidden;
+}
+#level .levelSelect {
+    position: relative;
+    float: left;
+    background-color: #000;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
+    padding-right: 100px;
+}
+
+.scrollbars {
+    position: absolute;
+    height: 96%;
+    width: 15px;
+    top: 0px;
+    right: 10px;
+    margin-top: 2%;
+    background-color: #000;
+    z-index: 999;
+}
+
+.scrollbars .scrollButton {
+    position: relative;
+    height: 13px;
+    border: 1px solid #aaa;
+    background-color: #ddd;
+}
+
+.scrollbars .topButton {top: 0;}
+.scrollbars .bottomButton {position: absolute;bottom: 0; width: 13px;}
+.scrollbars .slider {
+    position: absolute;
+    top: 15px;
+    width: 13px;
+    height: 100px;
+    border: 1px solid #99f;
+    background-color: #aaf;
+}
+
+.unselectable {
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    /*
+        Introduced in IE 10.
+        See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+    */
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#achievementNotification {
+    position: absolute;
+    background-color: #f00;
+    width: 300px;
+    height: 80px;
+
+    margin-left: 250px;
+    text-align: center;
+    bottom: -80px;
+    z-index: 999;
+}
+
+#achievementNotification .achievementNotificationHeader{
+    color: #fff;
+    font-size: 18px;
+}
+
+#achievementNotification .achievementNotificationTitle {
+    margin-top: 10px;
+    color: #fff;
+    font-size: 15px;
+
+}
+
+#level .levelButton {
+    position: relative;
+    display: inline;
+    float: left;
+    width: 110px;
+    height: 123px;
+    margin: 25px 0 25px 50px;
+    background: url('../img/level_button.png') no-repeat;
+    cursor: default;
+}
+#level .levelButton:hover {
+    cursor: pointer;
+}
+#level .levelButton .levelNo {
+    position: absolute;
+    top: 30px;
+    left: 0;
+}
+
+#level .levelButton .levelGold {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    padding-left: 42px;
+    padding-right: 17px;
+    padding-bottom: 7px;
+    color: #fff;
+    text-align: center;
+    font-family: redCircle;
+    font-size: 14px;
+}
