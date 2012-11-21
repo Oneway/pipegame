@@ -1,4 +1,4 @@
 pipegame
 ========
 
-HTML5 / JS tile rotation game with a twist
+A HTML5 / JS tile rotation game with a twist
