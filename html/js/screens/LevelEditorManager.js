@@ -46,6 +46,11 @@ var LevelEditorManager = function(gameManager, options)
         $('#tileInfo select#tileType').change({self: this}, this.changeTileType);
         $('#tileInfo input#tileGold').change({self: this}, this.changeTileGold);
         $('#tileInfo').click(function(e) {e.preventDefault(); e.stopPropagation();});
+
+        var self = this;
+        $('#editor').find('.dialogButton:has(.buttonMenu)').click(function(e) {
+            self.gameManager.screenManager.showScreen('main');
+        });
     }
 
     this.handleClick = function(e)
