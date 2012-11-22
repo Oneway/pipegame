@@ -7,11 +7,12 @@ var TileManager= function(gameManager, options) {
 
 	this.tiles = [];
 	this.curLevel = null;
-	this.tileDescPattern = /(bl|b|c|s|t)(_r([r0-3]))?(_g([0-1]))?/;
+	this.tileDescPattern = /(bl|bo|b|c|s|tj|t)(_r([r0-3]))?(_g([0-1]))?/;
     this.types = {
         c: 'Cross',
         b: 'Bend',
-        t: 'T-shape',
+        t: 'T-shape split',
+        tj: 'T-shape join',
         s: 'Straight',
         bl: 'Blank',
         bo: 'Bomb'
@@ -40,7 +41,8 @@ var TileManager= function(gameManager, options) {
 				options[i] = this.options[i];
 			}
 		}
-		switch(options.type) {
+
+        switch(options.type) {
 			case 'c':
 				newTile = new CrossTile(options);
 				break;
@@ -53,8 +55,14 @@ var TileManager= function(gameManager, options) {
 			case 't':
 				newTile = new TShapeTile(options);
 				break;
+            case 'tj':
+				newTile = new TShapeJoinTile(options);
+				break;
             case 'bl':
 				newTile = new BlankTile(options);
+				break;
+            case 'bo':
+                newTile = new BombTile(options);
 				break;
 			default:
 				return null;
@@ -62,7 +70,6 @@ var TileManager= function(gameManager, options) {
 		}
 
 		return newTile;
-
 	}
 
 	this.loadLevel = function(levelDef)
@@ -217,6 +224,7 @@ var TileManager= function(gameManager, options) {
 		var gold = 0;
 		var rows = this.curLevel.board.length;
 		var cols = this.curLevel.board[0].length;
+        var bombHit = false;
 		// curPos is an array with 3 items:
 		// 0: xCooordinate
 		// 1: yCoordinate
@@ -237,6 +245,11 @@ var TileManager= function(gameManager, options) {
 			var tile = this.getTileAt(curPos[0], curPos[1]);
 
 			while (tile != null) {
+
+                if (tile.type == 'bo') {
+                    bombHit = true;
+                    break;
+                }
 
 				// get exit direction(s) from current tile
 				var exits = tile.hitTile(curPos[2]);
@@ -285,8 +298,25 @@ var TileManager= function(gameManager, options) {
 			this.tiles[i].tile.redrawTile();
 		}
 
-		// Check for win
-		if (this.curLevel.finishes.length > 0 && finishes.length == 0) {
+		// Check for bomb or win
+        if (bombHit) {
+
+            var goldDifference = gold - this.curLevel.gold;
+            var text = 'Seems like you hit a bomb there, buddy./n'
+                     + 'If you do insist on defusing them, please remember to cut the blue wire first, okay?/n'
+                     + '/n/n No seriously, don\'t do that next time. It nearly gave me a heart attack.';
+
+            var lm = this.gameManager.levelManager;
+            var againButton = {type: 'again', click: lm.onLevelClick, eventData: {self: lm, levelNo: this.curLevel.levelNo}};
+            this.gameManager.screenManager.showDialog(
+                'bomb',
+                text,
+                [
+                    againButton
+                ]
+            );
+            this.gameManager.triggerEvent('bombHit', {});
+        } else if (this.curLevel.finishes.length > 0 && finishes.length == 0) {
 
             var eventInfo = {
                 levelId: 0,
@@ -297,7 +327,7 @@ var TileManager= function(gameManager, options) {
             var text = 'By completing this level, you have/nensured yourself of the /nfact that you,'
                      + 'sir, are indeed, awesome!!/n/nOh, and you found ' + gold + ' gold as well.'
                      + '/n/n Since you previously found '
-                     + ((this.curLevel.gold == 0) ? 'no' : this.curLevel.gold) + ' gold on this level '
+                     + ((this.curLevel.gold == 0) ? 'no' : this.curLevel.gold) + ' gold on this level, '
                      + goldDifference + ' gold has been added to your account.';
 
             var lm = this.gameManager.levelManager;

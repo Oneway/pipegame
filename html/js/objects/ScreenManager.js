@@ -91,7 +91,7 @@ var ScreenManager = function(offScreenElem, holderElem, options, gameManager)
 
         // Set dialog title
         var className = 'dialogTitle' + (
-            (title == 'win')
+            (title == 'win' || title == 'bomb')
                 ? (title + (Math.floor((Math.random() * 5)) + 1)).ucFirst()
                 : title.ucFirst()
         );

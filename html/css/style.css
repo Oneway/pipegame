@@ -248,6 +248,12 @@ body {
 #dialog .dialogTitleWin4:before {content: 'You are the best';}
 #dialog .dialogTitleWin5:before {content: 'A winner is you!';}
 
+#dialog .dialogTitleBomb1:before {content: 'KABOOM!';}
+#dialog .dialogTitleBomb2:before {content: 'You set off a bomb';}
+#dialog .dialogTitleBomb3:before {content: 'Not the red wire!';}
+#dialog .dialogTitleBomb4:before {content: 'Click, click, BOOM!';}
+#dialog .dialogTitleBomb5:before {content: 'Cut the red wire first';}
+
 #dialog #dialogText {
     position: relative;
     width: 428px;

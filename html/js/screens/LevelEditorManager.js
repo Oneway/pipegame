@@ -182,6 +182,7 @@ var LevelEditorManager = function(gameManager, options)
                 break;
             }
         }
+
         if (found) {
             self.curTile.tile.removeElement();
             var coordX = self.curTile.coordX;
@@ -212,6 +213,8 @@ var LevelEditorManager = function(gameManager, options)
             tile.redrawTile();
             self.tileManager.tiles.splice(i, 1, tileDef);
             self.curTile = tileDef;
+
+            self.tileManager.redrawBoard();
         }
     }
 

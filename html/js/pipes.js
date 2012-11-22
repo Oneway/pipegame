@@ -14,8 +14,7 @@ var options = {
 		// Divided so the resource loader can load the splash resources first
 		// and show this screen while the rest loads.
 		splash: [
-			'img/splash/oneway_games.png',
-			'img/splash/title.png'
+			'img/splash/oneway_games.png'
 		],
 		other: [
 			'img/arrows.png',
@@ -117,36 +116,23 @@ var options = {
 			finished: false
 		},
         {
-			name: 'Only finishes count',
+            name:"Split and join",
             levelNo: 5,
-			starts: [
-				[2, -1, 3],
-                [-1, 3, 2]
-			],
-			finishes: [
-				[-1, 1],
-				[4, 0],
-                [2, 4],
-				[3, 4]
-			],
-			board: [
-				['b','b','b','t','b','b','b','t','b','b','b','t'],
-                ['b','b','b','t','b','b','b','t','b','b','b','t'],
-                ['b','b','b','t','b','b','b','t','b','b','b','t'],
-                ['b','b','b','t','b','b','b','t','b','b','b','t'],
-                ['b','b','b','t','b','b','b','t','b','b','b','t'],
-                ['b','b','b','t','b','b','b','t','b','b','b','t'],
-                ['b','b','b','t','b','b','b','t','b','b','b','t'],
-                ['b','b','b','t','b','b','b','t','b','b','b','t'],
-                ['b','b','b','t','b','b','b','t','b','b','b','t'],
-                ['b','b','b','t','b','b','b','t','b','b','b','t'],
-                ['b','b','b','t','b','b','b','t','b','b','b','t'],
-                ['b','b','b','t','b','b','b','t','b','b','b','t']
-			],
-			gold: 0,
-            availableGold: 2,
-			finished: false
-		}
+            starts: [
+                [-1,1,2]
+            ],
+            finishes: [
+                [4,1]
+            ],
+            board:[
+                ["bo_r1_g0","b_r3_g0","b_r0_g0","bl_r0_g0"],
+                ["s_r1_g0","t_r1_g0","tj_r3_g0","s_r0_g0"],
+                ["bl_r1_g0","b_r2_g0","b_r1_g0","bl_r0_g0"]
+            ],
+            availableGold:0,
+            gold:0,
+            finished:false
+        }
 
 	]
 };
