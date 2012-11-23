@@ -24,6 +24,11 @@ var TileManager= function(gameManager, options) {
         this.options = options;
         this.parent = $('#playfield');
         this.parent.tm = this;
+
+        var self = this;
+        $('#pipeGame').find('.dialogButton:has(.buttonMenu)').click(function(e) {
+            self.gameManager.screenManager.showScreen('main');
+        });
     }
 
 	this.clearTiles = function()
@@ -124,10 +129,9 @@ var TileManager= function(gameManager, options) {
 
 	this.initField = function(levelDef)
 	{
+        this.redrawStartsAndFinishes(levelDef.starts, levelDef.finishes);
         this.parent.find('canvas').remove();
         this.parent.find('img').remove();
-        this.parent.find('div.finish').remove();
-        this.parent.find('div.start').remove();
 
         this.parent.unbind('click');
         this.tile = [];
@@ -141,40 +145,36 @@ var TileManager= function(gameManager, options) {
 			height: fieldHeight + 'px'
 		});
 
-		for (var i = 0; i < levelDef.starts.length; i++) {
+
+	}
+
+    this.redrawStartsAndFinishes = function(starts, finishes)
+    {
+        this.parent.find('div.finish').remove();
+        this.parent.find('div.start').remove();
+
+        for (var i = 0; i < starts.length; i++) {
 			var startElem = $('<div class="start">S</div>');
 
 			startElem.css({
-				left: this.options.offsetX + levelDef.starts[i][0] * this.options.tileWidth + 'px',
-				top: this.options.offsetY + levelDef.starts[i][1] * this.options.tileHeight + 'px'
+				left: this.options.offsetX + starts[i][0] * this.options.tileWidth + 'px',
+				top: this.options.offsetY + starts[i][1] * this.options.tileHeight + 'px'
 			});
 
 			this.parent.append(startElem);
 		}
 
-		for (var i = 0; i < levelDef.finishes.length; i++) {
+		for (var i = 0; i < finishes.length; i++) {
 
-            /*
-			var exitPos = '';
-			if (levelDef.finishes[i][0] < 0) {
-				exitPos = 'exitLeft';
-			} else if (levelDef.finishes[i][1] < 0) {
-				exitPos = 'exitTop';
-			} else if (levelDef.finishes[i][0] >= cols) {
-				exitPos = 'exitRight';
-			} else {
-				exitPos = 'exitBottom'
-			}
-            */
 			var finishElem = $('<div class="finish">F</div>');
 			finishElem.css({
-				left: this.options.offsetX + levelDef.finishes[i][0] * this.options.tileWidth + 'px',
-				top: this.options.offsetY + levelDef.finishes[i][1] * this.options.tileHeight + 'px'
+				left: this.options.offsetX + finishes[i][0] * this.options.tileWidth + 'px',
+				top: this.options.offsetY + finishes[i][1] * this.options.tileHeight + 'px'
 			});
 
 			this.parent.append(finishElem);
 		}
-	}
+    }
 
 	this.handleClick = function(e)
 	{
@@ -208,6 +208,7 @@ var TileManager= function(gameManager, options) {
 
 	this.redrawBoard = function()
 	{
+        this.redrawStartsAndFinishes(this.curLevel.starts, this.curLevel.finishes);
 		var starts = [];
 		for (var i = 0; i < this.curLevel.starts.length; i++){
 			starts[i] = [];

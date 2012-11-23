@@ -93,16 +93,18 @@ body {
 
 }
 
+#editor #borderTileInfo,
 #editor #tileInfo {
     z-index: 999;
     position: absolute;
     display: none;
     width: 150px;
     background-color: #fff;
-    border: 1px solid #f0f;
+    border: 2px solid #000;
     padding: 10px;
 }
 
+#editor #borderTileInfo select,
 #editor #tileInfo select,
 #editor #tileInfo input {
     width: 80px;

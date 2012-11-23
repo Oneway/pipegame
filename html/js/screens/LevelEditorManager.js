@@ -6,6 +6,8 @@ var LevelEditorManager = function(gameManager, options)
     this.tileManager = null;
     this.playfield = null;
     this.curTile = null;
+    this.curBorderTile = null;
+    this.validLevel = false;
     this.defaultLevel = {
         name: 'Level title',
         starts: [],
@@ -44,8 +46,10 @@ var LevelEditorManager = function(gameManager, options)
         this.playField.find('#moreCols').click({self: this, type: 'cols', op: 'more'}, this.changeSize);
         this.playField.find('#lessCols').click({self: this, type: 'cols', op: 'less'}, this.changeSize);
         $('#tileInfo select#tileType').change({self: this}, this.changeTileType);
+        $('#borderTileInfo select#tileBorderType').change({self: this}, this.changeBorderTileType);
         $('#tileInfo input#tileGold').change({self: this}, this.changeTileGold);
         $('#tileInfo').click(function(e) {e.preventDefault(); e.stopPropagation();});
+        $('#borderTileInfo').click(function(e) {e.preventDefault(); e.stopPropagation();});
 
         var self = this;
         $('#editor').find('.dialogButton:has(.buttonMenu)').click(function(e) {
@@ -56,7 +60,6 @@ var LevelEditorManager = function(gameManager, options)
     this.handleClick = function(e)
     {
         var self = e.data.self;
-
         var elemPos = findDomElemPosistion(this);
 		var x = e.pageX - elemPos[0];
 		var y = e.pageY - elemPos[1];
@@ -64,6 +67,7 @@ var LevelEditorManager = function(gameManager, options)
         var tileY = Math.floor((y - self.options.offsetY) / self.options.tileHeight);
         var tiles = self.tileManager.tiles;
         var tileDef = null;
+        self.validLevel = false;
 
         for(var i = 0; i < tiles.length; i++) {
 			if (tileX == tiles[i].coordX && tileY == tiles[i].coordY) {
@@ -84,6 +88,22 @@ var LevelEditorManager = function(gameManager, options)
 
         if (tileDef == null && e.ctrlKey && x >= 0 && y >= 0) {
 
+            var exit = self.isValidBorderTile(tileX, tileY);
+
+            borderTile = {
+                coordX: tileX,
+                coordY: tileY,
+                exit: exit,
+                type: self.getBorderTileType(tileX, tileY)
+            };
+
+            if (self.curBorderTile == null && exit) {
+                self.curBorderTile = borderTile;
+            } else {
+                self.curBorderTile = null;
+            }
+        } else {
+            self.curBorderTile = null;
         }
 
         self.updateBorderInfo();
@@ -223,6 +243,48 @@ var LevelEditorManager = function(gameManager, options)
         }
     }
 
+    this.changeBorderTileType = function(e)
+    {
+        var self = e.data.self;
+        var newType = $(this).val();
+        var curTile = self.curBorderTile;
+        var tileManager = self.tileManager;
+        var newTile = [curTile.coordX, curTile.coordY];
+
+        if (newType == 'start') {
+            newTile[2] = curTile.exit;
+        }
+
+        // remove the old start/finish
+        if (curTile.type == 'start') {
+            var starts = tileManager.curLevel.starts;
+            for (var i = 0; i < starts.length; i++) {
+                if (starts[i][0] == curTile.coordX && starts[i][1] == curTile.coordY) {
+                    starts.splice(i, 1);
+                    break;
+                }
+            }
+        } else if (curTile.type == 'finish') {
+            var finishes = tileManager.curLevel.finishes;
+            for (var i = 0; i < finishes.length; i++) {
+                if (finishes[i][0] == curTile.coordX && finishes[i][1] == curTile.coordY) {
+                    finishes.splice(i, 1);
+                    break;
+                }
+            }
+        }
+
+        // Insert the new one
+        if (newType == 'start') {
+            tileManager.curLevel.starts.push(newTile);
+        } else if (newType == 'finish') {
+            tileManager.curLevel.finishes.push(newTile);
+        }
+
+        self.curBorderTile.type = newType;
+        tileManager.redrawBoard();
+    }
+
     this.changeTileGold = function(e)
     {
         var self = e.data.self;
@@ -260,14 +322,44 @@ var LevelEditorManager = function(gameManager, options)
 
         } else {
             $('#editor #tileInfo').css('display', 'none');
-            $('#editor #selectedTile').css('display', 'none');
+            if (this.curBorderTile == null) {
+                $('#editor #selectedTile').css('display', 'none');
+            }
         }
-        this.outputLevel();
     }
 
     this.updateBorderInfo = function()
     {
 
+        if (this.curBorderTile != null) {
+
+            var infoX = this.options.offsetX + this.options.tileWidth * (this.curBorderTile.coordX + 1.5);
+            var infoY = (($('#editor #borderTileInfo').outerHeight() - this.options.tileHeight) / -2)
+                      + this.options.offsetY + this.options.tileHeight * this.curBorderTile.coordY;
+
+            var selX = this.options.offsetX + this.options.tileWidth * this.curBorderTile.coordX;
+            var selY = this.options.offsetY + this.options.tileHeight * this.curBorderTile.coordY;
+
+            $('#editor #borderTileInfo').css({
+                display: 'block',
+                left: infoX + 'px',
+                top: infoY + 'px'
+            });
+            $('#editor #selectedTile').css({
+                display: 'block',
+                width: this.options.tileWidth - 4,
+                height: this.options.tileHeight - 4,
+                left: selX,
+                top: selY
+            });
+            $('#editor #tileBorderType').val(this.curBorderTile.type);
+
+        } else {
+            $('#editor #borderTileInfo').css('display', 'none');
+            if (this.curTile == null) {
+                $('#editor #selectedTile').css('display', 'none');
+            }
+        }
     }
 
     this.outputLevel = function()
@@ -296,7 +388,7 @@ var LevelEditorManager = function(gameManager, options)
             finished: false
         };
 
-        console.log(JSON.stringify(levelDef));
+//        console.log(JSON.stringify(levelDef));
     }
 
     this.findTileByGridCoords = function(x, y)
@@ -306,6 +398,39 @@ var LevelEditorManager = function(gameManager, options)
             if (tiles[i].coordX == x && tiles[i].coordY == y) {
                 return tiles[i];
             }
+        }
+        return false;
+    }
+
+    this.getBorderTileType = function(coordX, coordY)
+    {
+        var starts = this.tileManager.curLevel.starts;
+        var finishes = this.tileManager.curLevel.finishes;
+
+        for (var i = 0; i < starts.length; i++) {
+            if (starts[i][0] == coordX && starts[i][1] == coordY) {
+                return 'start';
+            }
+        }
+        for (var i = 0; i < finishes.length; i++) {
+            if (finishes[i][0] == coordX && finishes[i][1] == coordY) {
+                return 'finish';
+            }
+        }
+
+        return 'none';
+    }
+
+    this.isValidBorderTile = function(x, y)
+    {
+        if (x == -1 && y > -1 && y < this.curHeight) { // Left side
+            return 2;
+        } else if (x == this.curWidth && y > -1 && y < this.curHeight) { // Right side
+            return 4;
+        } else if (x > -1 && x < this.curWidth && y == -1) { // Top side
+            return 3;
+        } else if (x > -1 && x < this.curWidth && y == this.curHeight) { // Bottom side
+            return 1;
         }
         return false;
     }
