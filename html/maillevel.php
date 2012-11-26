@@ -1,21 +1,27 @@
 <?php
 
 $levelDef = isset($_POST['leveldef']) ? json_decode($_POST['leveldef'], true) : null;
-$levelDef = json_decode('{"name":"","creator":"oneway","starts":[[-1, 0, 2]],"finishes":[[0, -1]],"board":[["b","s_r0_g2"],["b_r2_g2","b_r1_g0"]],"availableGold":2,"gold":0,"finished":false}', true);
 
 if (
         $levelDef != null && isset($levelDef['name']) &&  isset($levelDef['starts'])
         && isset($levelDef['finishes']) &&  isset($levelDef['board'])
-        && isset($levelDef['availableGold']) &&  isset($levelDef['gold'])
-        && isset($levelDef['creator'])
+        &&  isset($levelDef['gold']) && isset($levelDef['author'])
 ) {
     $levelDefStr = convertToString($levelDef);
     echo '<pre>' . $levelDefStr . '</pre>';
+} else {
+    die('no valid leveldef string passed.');
 }
 
 
 
-mail('sattevelt@gmail.com', 'level submitted', $levelDefStr);
+mail(
+    'sattevelt@gmail.com',
+    'level submitted',
+    $levelDefStr,
+    'From: pipes@steven-attevelt.nl' . "\r\n" .
+    'Reply-To: sattevelt@gmail.com' . "\r\n"
+);
 die('end');
 
 
@@ -85,13 +91,11 @@ function convertToString($levelDef)
     $startsStr .= "\n\t]";
 
     $str = "{\n";
-    $str .= "\tlevelNo: 0,\n";
     $str .= "\tname: '" . $levelDef['name'] . "',\n";
-    $str .= "\tcreator: '" . $levelDef['creator'] . "',\n";
+    $str .= "\tauthor: '" . $levelDef['author'] . "',\n";
     $str .= "\tboard: " . $boardStr . ",\n";
     $str .= "\tstarts: " . $startsStr . ",\n";
     $str .= "\tfinishes: " . $finishesStr . ",\n";
-    $str .= "\tavailableGold: $availableGold,\n";
     $str .= "\tgold: 0,\n";
     $str .= "\tfinished: false\n";
     $str .= "}";

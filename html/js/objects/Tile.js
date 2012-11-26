@@ -52,7 +52,7 @@ function BaseTile() {
 		});
 
         this.imageSpriteObj = new Image();
-        this.imageSpriteObj.src = '/img/pipes/pipes_sprite.png';
+        this.imageSpriteObj.src = 'img/pipes/pipes_sprite.png';
 
 		this.elem = canvasElem;
 		this.parent.append(canvasElem);

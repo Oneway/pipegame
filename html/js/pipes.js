@@ -18,17 +18,7 @@ var options = {
 		],
 		other: [
 			'img/arrows.png',
-            'img/pipes/blank.png',
-			'img/pipes/bend.png',
-			'img/pipes/bend_full.png',
-			'img/pipes/cross.png',
-			'img/pipes/cross_full.png',
-			'img/pipes/cross_lr.png',
-			'img/pipes/cross_tb.png',
-			'img/pipes/straight.png',
-			'img/pipes/straight_full.png',
-			'img/pipes/tshape.png',
-			'img/pipes/tshape_full.png'
+            'img/pipes/pipes_sprite.png'
 		]
 	},
 	levels: [

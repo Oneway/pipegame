@@ -148,9 +148,23 @@ body {
 #editor #editorInstructions {
     position: absolute;
     right: 20px;
-    top: 90px;
-    width: 200px;
+    top: 20px;
+    width: 225px;
     font-weight: normal;
+}
+
+#editor #levelAuthor {
+    position: absolute;
+    display: block;
+    bottom: 90px;
+    right: 90px;
+    width: 150px;
+}
+
+#editor #submitLevel {
+    position: absolute;
+    bottom: 30px;
+    right: 75px;
 }
 
 #splash {
@@ -319,6 +333,7 @@ div.dialogButton div.buttonCancel:before {content: 'Cancel'}
 div.dialogButton div.buttonOptions:before {content: 'Options';}
 div.dialogButton div.buttonPlay:before {content: 'Play';}
 div.dialogButton div.buttonEditor:before {content: 'Editor';}
+div.dialogButton div.buttonSubmit:before {content: 'Submit';}
 
 #level {
     position: relative;

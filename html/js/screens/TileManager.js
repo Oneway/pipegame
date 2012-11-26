@@ -17,6 +17,8 @@ var TileManager= function(gameManager, options) {
         bl: 'Blank',
         bo: 'Bomb'
     };
+    this.gameEndCallbacks = [];
+    this.useDialogs = true;
 
     this.construct = function(gameManager, options)
     {
@@ -29,6 +31,16 @@ var TileManager= function(gameManager, options) {
         $('#pipeGame').find('.dialogButton:has(.buttonMenu)').click(function(e) {
             self.gameManager.screenManager.showScreen('main');
         });
+    }
+
+    this.setUseDialogs = function(value)
+    {
+        this.useDialogs = value;
+    }
+
+    this.addGameEndCallback = function(callback)
+    {
+        this.gameEndCallbacks.push(callback);
     }
 
 	this.clearTiles = function()
@@ -226,6 +238,7 @@ var TileManager= function(gameManager, options) {
 		var rows = this.curLevel.board.length;
 		var cols = this.curLevel.board[0].length;
         var bombHit = false;
+        var levelWon = false;
 		// curPos is an array with 3 items:
 		// 0: xCooordinate
 		// 1: yCoordinate
@@ -237,7 +250,7 @@ var TileManager= function(gameManager, options) {
 			this.tiles[i].tile.setActiveImgCoords(null);
 		}
 
-		while (starts.length > 0) {
+		while (starts.length > 0 && finishes.length > 0) {
 
 			if (curPos == null) {
 				curPos = this.getNextCoordinate(starts.shift());
@@ -287,6 +300,7 @@ var TileManager= function(gameManager, options) {
 
 			// Check if there are any remaining finishes (0 = win condition)
 			if (finishes.length == 0) {
+                levelWon = true;
 				break;
 			}
 
@@ -300,7 +314,7 @@ var TileManager= function(gameManager, options) {
 		}
 
 		// Check for bomb or win
-        if (bombHit) {
+        if (bombHit && this.useDialogs) {
 
             var goldDifference = gold - this.curLevel.gold;
             var text = 'Seems like you hit a bomb there, buddy./n'
@@ -317,7 +331,7 @@ var TileManager= function(gameManager, options) {
                 ]
             );
             this.gameManager.triggerEvent('bombHit', {});
-        } else if (this.curLevel.finishes.length > 0 && finishes.length == 0) {
+        } else if (this.curLevel.finishes.length > 0 && finishes.length == 0 && this.useDialogs) {
 
             var eventInfo = {
                 levelId: 0,
@@ -345,6 +359,10 @@ var TileManager= function(gameManager, options) {
             this.gameManager.triggerEvent('levelCompleted', eventInfo);
 		}
 
+
+        for (var i = 0; i < this.gameEndCallbacks.length; i++) {
+            this.gameEndCallbacks[i][0].call(this.gameEndCallbacks[i][1], levelWon);
+        }
 	}
 
 	this.getNextCoordinate = function(curPos)

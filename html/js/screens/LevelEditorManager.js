@@ -36,6 +36,8 @@ var LevelEditorManager = function(gameManager, options)
 
         this.playField = $('#editor #editorPlayField');
         tm = new TileManager(this.gameManager, this.options);
+        tm.setUseDialogs(false);
+        tm.addGameEndCallback([this.setLevelState, this]);
         tm.parent = this.playField;
         tm.loadLevel(this.defaultLevel);
         this.tileManager = tm;
@@ -48,13 +50,18 @@ var LevelEditorManager = function(gameManager, options)
         $('#tileInfo select#tileType').change({self: this}, this.changeTileType);
         $('#borderTileInfo select#tileBorderType').change({self: this}, this.changeBorderTileType);
         $('#tileInfo input#tileGold').change({self: this}, this.changeTileGold);
-        $('#tileInfo').click(function(e) {e.preventDefault(); e.stopPropagation();});
-        $('#borderTileInfo').click(function(e) {e.preventDefault(); e.stopPropagation();});
-
+        $('#tileInfo').click(function(e) {e.preventDefault();e.stopPropagation();});
+        $('#borderTileInfo').click(function(e) {e.preventDefault();e.stopPropagation();});
+        $('#editor div.buttonSubmit').click({self: this}, this.outputLevel);
         var self = this;
         $('#editor').find('.dialogButton:has(.buttonMenu)').click(function(e) {
             self.gameManager.screenManager.showScreen('main');
         });
+    }
+
+    this.setLevelState = function(value)
+    {
+        this.validLevel = value;
     }
 
     this.handleClick = function(e)
@@ -67,7 +74,6 @@ var LevelEditorManager = function(gameManager, options)
         var tileY = Math.floor((y - self.options.offsetY) / self.options.tileHeight);
         var tiles = self.tileManager.tiles;
         var tileDef = null;
-        self.validLevel = false;
 
         for(var i = 0; i < tiles.length; i++) {
 			if (tileX == tiles[i].coordX && tileY == tiles[i].coordY) {
@@ -90,7 +96,7 @@ var LevelEditorManager = function(gameManager, options)
 
             var exit = self.isValidBorderTile(tileX, tileY);
 
-            borderTile = {
+            var borderTile = {
                 coordX: tileX,
                 coordY: tileY,
                 exit: exit,
@@ -238,8 +244,6 @@ var LevelEditorManager = function(gameManager, options)
             tile.redrawTile();
             self.tileManager.tiles.splice(i, 1, tileDef);
             self.curTile = tileDef;
-
-            self.tileManager.redrawBoard();
         }
     }
 
@@ -282,7 +286,7 @@ var LevelEditorManager = function(gameManager, options)
         }
 
         self.curBorderTile.type = newType;
-        tileManager.redrawBoard();
+        self.validLevel = tileManager.redrawBoard();
     }
 
     this.changeTileGold = function(e)
@@ -362,15 +366,22 @@ var LevelEditorManager = function(gameManager, options)
         }
     }
 
-    this.outputLevel = function()
+    this.outputLevel = function(e)
     {
-        var tm = this.tileManager;
+        var self = e.data.self;
+
+        if (! self.validLevel) {
+            alert('Please make sure the level is in a solved state before submitting');
+            return;
+        }
+
+        var tm = self.tileManager;
         var availableGold = 0;
         var board = [];
-        for (var i = 0; i < this.curHeight; i++) {
+        for (var i = 0; i < self.curHeight; i++) {
             board[i] = [];
-            for (var j = 0; j < this.curWidth; j++) {
-                var tile = this.findTileByGridCoords(j, i);
+            for (var j = 0; j < self.curWidth; j++) {
+                var tile = self.findTileByGridCoords(j, i);
                 var tileGold = tile.tile.gold;
                 var tileStr = tile.tile.type + '_r' + tile.tile.r + '_g' + tileGold;
                 board[i][j] = tileStr;
@@ -380,6 +391,7 @@ var LevelEditorManager = function(gameManager, options)
 
         var levelDef = {
             name: '',
+            author: $('#levelAuthor').attr('value'),
             starts: tm.curLevel.starts,
             finishes: tm.curLevel.finishes,
             board: board,
@@ -388,7 +400,12 @@ var LevelEditorManager = function(gameManager, options)
             finished: false
         };
 
-//        console.log(JSON.stringify(levelDef));
+        $.ajax({
+            url: 'maillevel.php',
+            data: {leveldef: JSON.stringify(levelDef)},
+            type: 'POST'
+        });
+//        (JSON.stringify(levelDef));
     }
 
     this.findTileByGridCoords = function(x, y)
