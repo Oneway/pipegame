@@ -399,13 +399,13 @@ var LevelEditorManager = function(gameManager, options)
             gold: 0,
             finished: false
         };
+console.log(JSON.stringify(levelDef));
 
         $.ajax({
             url: 'maillevel.php',
             data: {leveldef: JSON.stringify(levelDef)},
             type: 'POST'
         });
-//        (JSON.stringify(levelDef));
     }
 
     this.findTileByGridCoords = function(x, y)

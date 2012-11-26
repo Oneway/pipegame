@@ -108,8 +108,7 @@ var TileManager= function(gameManager, options) {
 				}
 
 				var type = matches[1];
-				var r = (matches[3] != undefined) ? parseInt(matches[3]) : 'r';
-
+				var r = (matches[3] != undefined && matches[3] != 'r') ? parseInt(matches[3]) : 'r';
 				var gold = (matches[5] != undefined) ? parseInt(matches[5]) : 0;
 
 				var tileOptions = {
@@ -134,6 +133,9 @@ var TileManager= function(gameManager, options) {
 				});
 			}
 		}
+
+        $('#pipeGame #levelTitle').text(levelDef.name);
+
         makeUnselectable(this.parent);
 		this.redrawBoard();
 		this.parent.click({self: this}, this.handleClick);
