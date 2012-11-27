@@ -10,9 +10,9 @@ var AchievementManager = function(gameManager)
         this.gameManager = gameManager;
         this.stateManager = this.gameManager.stateManager;
 
-        this.gameManager.registerEventListener('gameLoaded', {object: this, method: this.onGameLoaded});
-        this.gameManager.registerEventListener('levelCompleted', {object: this, method: this.onLevelCompleted});
-        this.gameManager.registerEventListener('goldCollected', {object: this, method: this.onGoldCollected});
+//        this.gameManager.registerEventListener('gameLoaded', {object: this, method: this.onGameLoaded});
+//        this.gameManager.registerEventListener('levelCompleted', {object: this, method: this.onLevelCompleted});
+//        this.gameManager.registerEventListener('goldCollected', {object: this, method: this.onGoldCollected});
 //        this.gameManager.registerEventListener('', this.);
 //        this.gameManager.registerEventListener('', this.);
 //        this.gameManager.registerEventListener('', this.);

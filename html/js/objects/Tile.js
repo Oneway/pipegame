@@ -35,7 +35,7 @@ function BaseTile() {
 		this.gold = options.gold;
 		this.type = options.type;
 		this.parent = options.parent;
-		this.imgPath = options.imgPath;
+        this.imageSpriteObj = options.imgObj;
 
 		var canvasElem = $('<canvas>');
 		this.offsetX = Math.ceil((Math.sqrt(this.w * this.w * 2) - this.w) / 2);
@@ -50,9 +50,6 @@ function BaseTile() {
 			left: (this.x - this.offsetX) + 'px',
 			top: (this.y - this.offsetY) + 'px'
 		});
-
-        this.imageSpriteObj = new Image();
-        this.imageSpriteObj.src = 'img/pipes/pipes_sprite.png';
 
 		this.elem = canvasElem;
 		this.parent.append(canvasElem);

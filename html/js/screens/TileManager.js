@@ -19,6 +19,7 @@ var TileManager= function(gameManager, options) {
     };
     this.gameEndCallbacks = [];
     this.useDialogs = true;
+    this.tilesSpriteObj = null
 
     this.construct = function(gameManager, options)
     {
@@ -26,6 +27,9 @@ var TileManager= function(gameManager, options) {
         this.options = options;
         this.parent = $('#playfield');
         this.parent.tm = this;
+        this.tilesSpriteObj = new Image();
+        this.tilesSpriteObj.src = options.imgPath + 'pipes_sprite.png';
+        this.options.imgObj = this.tilesSpriteObj;
 
         var self = this;
         $('#pipeGame').find('.dialogButton:has(.buttonMenu)').click(function(e) {

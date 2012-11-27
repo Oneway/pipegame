@@ -212,6 +212,5 @@ $(window).load(options, init);
 function init(event)
 {
     var options = event.data;
-	var gameManager = new GameManager();
-	gameManager.init(options);
+	var gameManager = new GameManager(options);
 };

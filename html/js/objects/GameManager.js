@@ -1,4 +1,4 @@
- var GameManager = function()
+ var GameManager = function(options)
  {
 	this.screenManager = null;
 	this.stateManager = null;
@@ -8,28 +8,33 @@
 	this.levelManager = null;
 
 	this.eventListeners = {};
+    this.options = {};
 
+
+    this.construct = function(options)
+    {
+        this.options = options;
+		this.screenManager = new ScreenManager($('#offScreenHolder'), $('#game'), this.options.screenManager);
+        this.registerEventListener('gameLoaded', {object: this, method: this.init})
+		var splashManager = new SplashManager(options['splashManager'], this);
+		splashManager.init();
+    }
 
 	this.init = function(options)
 	{
 		// create all manager objects here and inject self.
-		this.screenManager = new ScreenManager($('#offScreenHolder'), $('#game'), options.screenManager);
         this.stateManager = new StateManager();
         this.achievementManager = new AchievementManager(this);
-        this.levelManager = new LevelManager(options.levels, this);
-        this.tileManager = new TileManager(this, options.tileManager);
-
-
+        this.levelManager = new LevelManager(this.options.levels, this);
+        this.tileManager = new TileManager(this, this.options.tileManager);
 
         var mainManager = new MainManager(this);
         var shopManager = new ShopManager(this);
-		var splashManager = new SplashManager(options['splashManager'], this);
-        var levelEditorManager = new LevelEditorManager(this, options.tileManager);
-		splashManager.init();
+        var levelEditorManager = new LevelEditorManager(this, this.options.tileManager);
 	}
 
-	this.getScreenManager = function() { return this.getScreenManager;}
-	this.getStateManager = function() { return this.stateManager;}
+	this.getScreenManager = function() {return this.getScreenManager;}
+	this.getStateManager = function() {return this.stateManager;}
 
 
 	this.registerEventListener = function(name, callback) {
@@ -59,5 +64,5 @@
 		}
 	}
 
-
+    this.construct(options);
  };

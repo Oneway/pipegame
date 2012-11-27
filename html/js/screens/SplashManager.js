@@ -13,15 +13,9 @@ var SplashManager = function(resources, gameManager)
 	{
 		var loader = new PxLoader();
 		var tags = this.loadResources(loader, this.resources);
-		var splashElem = null;
 		var sm = this.gameManager.screenManager;
+		var splashElem = sm.showScreen('splash', true);;
 		var self = this;
-
-		loader.addProgressListener(function(e) {
-			if (e.totalCount == e.completedCount) {
-				splashElem = sm.showScreen('splash', true);
-			}
-		}, 'splash');
 
 		loader.addProgressListener(function(e) {
 			if (splashElem == null) {
